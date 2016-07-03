@@ -1,7 +1,10 @@
 package transformers;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /*
@@ -10,25 +13,29 @@ import java.util.function.Function;
  being used for the setter/builder call on the To object, R.
  If R and T are not the same type, a transformer function is required that converts from T to R.
  */
-interface MappingsContainer<From, To> {
+class MappingsContainer<From, To> implements Iterable<PropertyMapping> {
 
-    List<PropertyMapping> getPropertyMappings();
+    private final List<PropertyMapping> propertyMappings;
 
-    void addPropertyMapping(PropertyMapping propertyMapping);
+    MappingsContainer() {
+        this.propertyMappings = new ArrayList<>();
+    }
 
-    default <T, R> MappingsContainer<From, To> withMapping(Function<From, T> recordPropertyGetter,
-                                                           BiConsumer<To, R> builderPropertySetter,
-                                                           Function<T, R> transformation) {
+    @Override
+    public Iterator<PropertyMapping> iterator() {
+        return propertyMappings.iterator();
+    }
+
+    <T, R> void addMapping(Function<From, T> recordPropertyGetter,
+                                                  BiConsumer<To, R> builderPropertySetter,
+                                                  Function<T, R> transformation) {
         OneToOneWithTransformation<R, T, From, To> propertyMapping = new OneToOneWithTransformation(recordPropertyGetter, builderPropertySetter, transformation);
-        addPropertyMapping(propertyMapping);
-        return this;
+        propertyMappings.add(propertyMapping);
     }
 
-    default <T> MappingsContainer<From, To> withMapping(Function<From, T> recordPropertyGetter,
-                                                        BiConsumer<To, T> builderPropertySetter) {
+    <T> void addMapping(Function<From, T> recordPropertyGetter,
+                                               BiConsumer<To, T> builderPropertySetter) {
         OneToOne<T, From, To> oneToOneMapping = new OneToOne<>(recordPropertyGetter, builderPropertySetter);
-        addPropertyMapping(oneToOneMapping);
-        return this;
+        propertyMappings.add(oneToOneMapping);
     }
-
 }
