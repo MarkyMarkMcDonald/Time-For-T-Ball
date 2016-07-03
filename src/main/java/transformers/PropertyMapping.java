@@ -1,5 +1,5 @@
 package transformers;
 
-interface PropertyMapping<T, R> {
-    void map(T from, R to);
+interface PropertyMapping<From, To> {
+    void map(From from, To to);
 }
