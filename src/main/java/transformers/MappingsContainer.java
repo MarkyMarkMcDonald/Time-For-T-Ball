@@ -16,17 +16,19 @@ public interface MappingsContainer<From, To> {
 
     void addPropertyMapping(PropertyMapping propertyMapping);
 
-    default <T,R> void withMapping(Function<From, T> recordPropertyGetter,
-                           BiConsumer<To, R> builderPropertySetter,
-                           Function<T, R> transformation) {
+    default <T, R> MappingsContainer<From, To> withMapping(Function<From, T> recordPropertyGetter,
+                                                           BiConsumer<To, R> builderPropertySetter,
+                                                           Function<T, R> transformation) {
         PropertyWithTransformationMapping<R, T, From, To> propertyMapping = new PropertyWithTransformationMapping(recordPropertyGetter, builderPropertySetter, transformation);
         addPropertyMapping(propertyMapping);
+        return this;
     }
 
-    default <T> void withMapping(Function<From, T> recordPropertyGetter,
-                         BiConsumer<To, T> builderPropertySetter) {
+    default <T> MappingsContainer<From, To> withMapping(Function<From, T> recordPropertyGetter,
+                                                        BiConsumer<To, T> builderPropertySetter) {
         OneToOnePropertyMapping<T, From, To> oneToOneMapping = new OneToOnePropertyMapping<>(recordPropertyGetter, builderPropertySetter);
         addPropertyMapping(oneToOneMapping);
+        return this;
     }
 
 }
