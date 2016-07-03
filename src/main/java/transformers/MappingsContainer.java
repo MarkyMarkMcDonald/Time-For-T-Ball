@@ -19,14 +19,14 @@ public interface MappingsContainer<From, To> {
     default <T, R> MappingsContainer<From, To> withMapping(Function<From, T> recordPropertyGetter,
                                                            BiConsumer<To, R> builderPropertySetter,
                                                            Function<T, R> transformation) {
-        PropertyWithTransformationMapping<R, T, From, To> propertyMapping = new PropertyWithTransformationMapping(recordPropertyGetter, builderPropertySetter, transformation);
+        OneToOneWithTransformation<R, T, From, To> propertyMapping = new OneToOneWithTransformation(recordPropertyGetter, builderPropertySetter, transformation);
         addPropertyMapping(propertyMapping);
         return this;
     }
 
     default <T> MappingsContainer<From, To> withMapping(Function<From, T> recordPropertyGetter,
                                                         BiConsumer<To, T> builderPropertySetter) {
-        OneToOnePropertyMapping<T, From, To> oneToOneMapping = new OneToOnePropertyMapping<>(recordPropertyGetter, builderPropertySetter);
+        OneToOne<T, From, To> oneToOneMapping = new OneToOne<>(recordPropertyGetter, builderPropertySetter);
         addPropertyMapping(oneToOneMapping);
         return this;
     }

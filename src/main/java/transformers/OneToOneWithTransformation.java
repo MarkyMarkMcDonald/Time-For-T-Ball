@@ -3,12 +3,12 @@ package transformers;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-class PropertyWithTransformationMapping<T, R, Record, Builder> implements PropertyMapping<Record, Builder> {
+class OneToOneWithTransformation<T, R, Record, Builder> implements PropertyMapping<Record, Builder> {
     private final Function<Record, T> recordPropertyGetter;
     private final BiConsumer<Builder, R> builderPropertySetter;
     private final Function<T, R> transformation;
 
-    public PropertyWithTransformationMapping(
+    public OneToOneWithTransformation(
             Function<Record, T> recordPropertyGetter,
             BiConsumer<Builder, R> builderPropertySetter,
             Function<T, R> transformation) {
