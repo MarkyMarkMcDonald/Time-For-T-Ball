@@ -6,8 +6,8 @@ class CarBuilder {
     private String name;
     private LocalDate createdAt;
 
-    public void withLastSale(String lastSale) {
-        this.name = lastSale;
+    public void withName(String name) {
+        this.name = name;
     }
 
     public void withCreatedAt(LocalDate createdAt) {
