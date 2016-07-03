@@ -11,23 +11,15 @@ import java.time.format.DateTimeFormatter;
 
 public class BananaExampleTest {
 
-    private Transformer<BananaRecord, BananaBuilder> bananaTransformer;
-
-    @Before
-    public void setUp() throws Exception {
-        bananaTransformer = Transformers.create();
-    }
-
     @Test
     public void oneToOneMapping() {
-        bananaTransformer
+        Banana banana = Transformers.create(BananaRecord.class, BananaBuilder.class)
                 .withMapping(BananaRecord::getCountry, BananaBuilder::withCountry)
-                .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, value -> null);
-
-        Banana banana = bananaTransformer.transform(
-                new BananaRecord("Brazil", null),
-                new BananaBuilder()
-        ).createBanana();
+                .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, value -> null)
+                .transform(
+                        new BananaRecord("Brazil", null),
+                        new BananaBuilder()
+                ).createBanana();
 
         System.out.println(banana);
 
@@ -36,14 +28,13 @@ public class BananaExampleTest {
 
     @Test
     public void oneToOneMapping_withTransformation() {
-        bananaTransformer
+        Banana banana = Transformers.create(BananaRecord.class, BananaBuilder.class)
                 .withMapping(BananaRecord::getCountry, BananaBuilder::withCountry)
-                .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, this::legacyDateParser);
-
-        Banana banana = bananaTransformer.transform(
-                new BananaRecord("Brazil", "October-3-1991"),
-                new BananaBuilder()
-        ).createBanana();
+                .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, this::legacyDateParser)
+                .transform(
+                        new BananaRecord("Brazil", "October-3-1991"),
+                        new BananaBuilder()
+                ).createBanana();
 
         System.out.println(banana);
 
