@@ -1,8 +1,8 @@
-package examples;
+package examples.car;
 
 import java.time.LocalDate;
 
-class CarBuilder {
+public class CarBuilder {
     private String name;
     private LocalDate createdAt;
 
