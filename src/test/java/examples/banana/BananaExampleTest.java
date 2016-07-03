@@ -1,9 +1,7 @@
 package examples.banana;
 
-import org.junit.Before;
 import org.junit.Test;
 import transformers.Transformer;
-import transformers.Transformers;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -13,7 +11,7 @@ public class BananaExampleTest {
 
     @Test
     public void oneToOneMapping() {
-        Banana banana = Transformers.create(BananaRecord.class, BananaBuilder.class)
+        Banana banana = new Transformer<BananaRecord, BananaBuilder>()
                 .withMapping(BananaRecord::getCountry, BananaBuilder::withCountry)
                 .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, value -> null)
                 .transform(
@@ -28,7 +26,7 @@ public class BananaExampleTest {
 
     @Test
     public void oneToOneMapping_withTransformation() {
-        Banana banana = Transformers.create(BananaRecord.class, BananaBuilder.class)
+        Banana banana = new Transformer<BananaRecord, BananaBuilder>()
                 .withMapping(BananaRecord::getCountry, BananaBuilder::withCountry)
                 .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, this::legacyDateParser)
                 .transform(

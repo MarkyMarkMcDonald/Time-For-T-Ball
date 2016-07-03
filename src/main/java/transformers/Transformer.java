@@ -4,25 +4,29 @@ package transformers;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public interface Transformer<From, To> {
+public class Transformer<From, To> {
 
-    MappingsContainer<From, To> getMappingsContainer();
+    private final MappingsContainer<From, To> mappingsContainer;
 
-    default To transform(From carRecord, To carBuilder) {
-        getMappingsContainer().getPropertyMappings().forEach(mapping -> mapping.map(carRecord, carBuilder));
+    public Transformer() {
+        this.mappingsContainer = MappingContainers.listBacked();
+    }
+
+    public To transform(From carRecord, To carBuilder) {
+        mappingsContainer.getPropertyMappings().forEach(mapping -> mapping.map(carRecord, carBuilder));
         return carBuilder;
     }
 
-    default <T, R> Transformer<From, To> withMapping(Function<From, T> recordPropertyGetter,
+    public <T, R> Transformer<From, To> withMapping(Function<From, T> recordPropertyGetter,
                                       BiConsumer<To, R> builderPropertySetter,
                                       Function<T, R> transformation) {
-        getMappingsContainer().withMapping(recordPropertyGetter, builderPropertySetter, transformation);
+        mappingsContainer.withMapping(recordPropertyGetter, builderPropertySetter, transformation);
         return this;
     }
 
-    default <T> Transformer<From, To> withMapping(Function<From, T> recordPropertyGetter,
+    public <T> Transformer<From, To> withMapping(Function<From, T> recordPropertyGetter,
                                    BiConsumer<To, T> builderPropertySetter) {
-        getMappingsContainer().withMapping(recordPropertyGetter, builderPropertySetter);
+        mappingsContainer.withMapping(recordPropertyGetter, builderPropertySetter);
         return this;
     }
 }
