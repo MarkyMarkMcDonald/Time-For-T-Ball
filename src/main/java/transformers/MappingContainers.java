@@ -5,11 +5,11 @@ import java.util.List;
 
 public class MappingContainers {
 
-    public static <T,R> MappingsContainer<T,R> listBacked() {
+    public static <From, To> MappingsContainer<From, To> listBacked() {
         return new ListBackedMappingsContainer<>();
     }
 
-    private static class ListBackedMappingsContainer<T,R> implements MappingsContainer<T, R> {
+    private static class ListBackedMappingsContainer<From, To> implements MappingsContainer<From, To> {
         private List<PropertyMapping> propertyMappings = new ArrayList<>();
 
         @Override
