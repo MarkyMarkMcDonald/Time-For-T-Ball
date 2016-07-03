@@ -1,6 +1,8 @@
 package examples.banana;
 
+import org.junit.Before;
 import org.junit.Test;
+import transformers.Transformer;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -8,19 +10,24 @@ import java.time.format.DateTimeFormatter;
 
 public class BananaExampleTest {
 
+    private Transformer<BananaRecord, BananaBuilder> bananaTransformer;
+
+    @Before
+    public void setUp() throws Exception {
+        bananaTransformer = new BananaTransformer();
+    }
+
     @Test
     public void oneToOneMapping() {
-        BananaRecord bananaRecord = new BananaRecord("Brazil", null);
-        BananaBuilder bananaBuilder = new BananaBuilder();
-
-        BananaTransformer bananaTransformer = new BananaTransformer();
         bananaTransformer
                 .withMapping(BananaRecord::getCountry, BananaBuilder::withCountry)
                 .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, value -> null);
 
-        BananaBuilder completedBananaBuilder = bananaTransformer.transform(bananaRecord, bananaBuilder);
+        Banana banana = bananaTransformer.transform(
+                new BananaRecord("Brazil", null),
+                new BananaBuilder()
+        ).createBanana();
 
-        Banana banana = completedBananaBuilder.createBanana();
         System.out.println(banana);
 
         assert "Brazil".equals(banana.getCountry());
@@ -28,16 +35,16 @@ public class BananaExampleTest {
 
     @Test
     public void oneToOneMapping_withTransformation() {
-        BananaRecord bananaRecord = new BananaRecord("Brazil", "October-3-1991");
-        BananaBuilder bananaBuilder = new BananaBuilder();
 
-        BananaTransformer bananaTransformer = new BananaTransformer();
         bananaTransformer
                 .withMapping(BananaRecord::getCountry, BananaBuilder::withCountry)
                 .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, this::legacyDateParser);
-        BananaBuilder completedBananaBuilder = bananaTransformer.transform(bananaRecord, bananaBuilder);
 
-        Banana banana = completedBananaBuilder.createBanana();
+        Banana banana = bananaTransformer.transform(
+                new BananaRecord("Brazil", "October-3-1991"),
+                new BananaBuilder()
+        ).createBanana();
+
         System.out.println(banana);
 
         assert "Brazil".equals(banana.getCountry());
