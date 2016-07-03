@@ -13,12 +13,12 @@ public class CarExampleTest {
         CarRecord carRecord = new CarRecord("Batmobile", null);
         CarBuilder carBuilder = new CarBuilder();
 
-        CarTransformer carTransformer = new CarTransformer(carRecord, carBuilder);
+        CarTransformer carTransformer = new CarTransformer();
         carTransformer
                 .withMapping(CarRecord::getName, CarBuilder::withName)
                 .withMapping(CarRecord::getCreatedAt, CarBuilder::withCreatedAt, value -> null);
 
-        CarBuilder completedCarBuilder = carTransformer.transform();
+        CarBuilder completedCarBuilder = carTransformer.transform(carRecord, carBuilder);
 
         Car car = completedCarBuilder.createCar();
         System.out.println(car);
@@ -31,11 +31,11 @@ public class CarExampleTest {
         CarRecord carRecord = new CarRecord("Batmobile", "October-3-1991");
         CarBuilder carBuilder = new CarBuilder();
 
-        CarTransformer carTransformer = new CarTransformer(carRecord, carBuilder);
+        CarTransformer carTransformer = new CarTransformer();
         carTransformer
                 .withMapping(CarRecord::getName, CarBuilder::withName)
                 .withMapping(CarRecord::getCreatedAt, CarBuilder::withCreatedAt, this::legacyDateParser);
-        CarBuilder completedCarBuilder = carTransformer.transform();
+        CarBuilder completedCarBuilder = carTransformer.transform(carRecord, carBuilder);
 
         Car car = completedCarBuilder.createCar();
         System.out.println(car);

@@ -1,38 +1,35 @@
 package examples;
 
+import transformers.MappingContainers;
 import transformers.MappingsContainer;
-import transformers.PropertyMapping;
-import transformers.Transformer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
-class CarTransformer implements MappingsContainer<CarRecord, CarBuilder>, Transformer<CarRecord, CarBuilder> {
+class CarTransformer {
 
-    private List<PropertyMapping> propertyMappings = new ArrayList<>();
+    private final MappingsContainer<CarRecord, CarBuilder> mappingsContainer;
 
-    private final CarRecord carRecord;
-    private final CarBuilder carBuilder;
-
-    public CarTransformer(CarRecord carRecord, CarBuilder carBuilder) {
-        this.carRecord = carRecord;
-        this.carBuilder = carBuilder;
+    public CarTransformer() {
+        this.mappingsContainer = MappingContainers.listBacked();
     }
 
-    @Override
-    public List<PropertyMapping> getPropertyMappings() {
-        return propertyMappings;
-    }
-
-    @Override
-    public void addPropertyMapping(PropertyMapping propertyMapping) {
-        propertyMappings.add(propertyMapping);
-    }
-
-    @Override
-    public CarBuilder transform() {
-        transform(getPropertyMappings(), carRecord, carBuilder);
+    public CarBuilder transform(CarRecord carRecord, CarBuilder carBuilder) {
+        mappingsContainer.getPropertyMappings().forEach(mapping -> mapping.map(carRecord, carBuilder));
         return carBuilder;
+    }
+
+    public <T, R> CarTransformer withMapping(Function<CarRecord, T> recordPropertyGetter,
+                                             BiConsumer<CarBuilder, R> builderPropertySetter,
+                                             Function<T, R> transformation) {
+        this.mappingsContainer.withMapping(recordPropertyGetter, builderPropertySetter, transformation);
+        return this;
+    }
+
+    public <T> CarTransformer withMapping(Function<CarRecord, T> recordPropertyGetter,
+                                          BiConsumer<CarBuilder, T> builderPropertySetter) {
+        this.mappingsContainer.withMapping(recordPropertyGetter, builderPropertySetter);
+        return this;
     }
 
 }
