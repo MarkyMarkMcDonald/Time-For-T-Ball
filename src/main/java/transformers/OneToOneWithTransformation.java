@@ -8,7 +8,7 @@ class OneToOneWithTransformation<T, R, Record, Builder> implements PropertyMappi
     private final BiConsumer<Builder, R> builderPropertySetter;
     private final Function<T, R> transformation;
 
-    public OneToOneWithTransformation(
+    OneToOneWithTransformation(
             Function<Record, T> recordPropertyGetter,
             BiConsumer<Builder, R> builderPropertySetter,
             Function<T, R> transformation) {

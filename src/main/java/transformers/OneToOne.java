@@ -7,7 +7,7 @@ class OneToOne<T, From, To> implements PropertyMapping<From, To> {
     private final Function<From, T> recordPropertyGetter;
     private final BiConsumer<To, T> builderPropertySetter;
 
-    public OneToOne(Function<From, T> recordPropertyGetter, BiConsumer<To, T> builderPropertySetter) {
+    OneToOne(Function<From, T> recordPropertyGetter, BiConsumer<To, T> builderPropertySetter) {
         this.recordPropertyGetter = recordPropertyGetter;
         this.builderPropertySetter = builderPropertySetter;
     }
