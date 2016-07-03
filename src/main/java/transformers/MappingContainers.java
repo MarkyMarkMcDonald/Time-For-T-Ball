@@ -3,9 +3,9 @@ package transformers;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MappingContainers {
+class MappingContainers {
 
-    public static <From, To> MappingsContainer<From, To> listBacked() {
+    static <From, To> MappingsContainer<From, To> listBacked() {
         return new ListBackedMappingsContainer<>();
     }
 

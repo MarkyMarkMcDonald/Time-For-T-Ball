@@ -10,7 +10,7 @@ import java.util.function.Function;
  being used for the setter/builder call on the To object, R.
  If R and T are not the same type, a transformer function is required that converts from T to R.
  */
-public interface MappingsContainer<From, To> {
+interface MappingsContainer<From, To> {
 
     List<PropertyMapping> getPropertyMappings();
 
