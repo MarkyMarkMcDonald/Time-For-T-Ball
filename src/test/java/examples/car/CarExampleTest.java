@@ -3,6 +3,7 @@ package examples.car;
 import org.junit.Before;
 import org.junit.Test;
 import transformers.Transformer;
+import transformers.Transformers;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -14,7 +15,7 @@ public class CarExampleTest {
 
     @Before
     public void setUp() throws Exception {
-        carTransformer = new CarTransformer();
+        carTransformer = Transformers.create();
     }
 
     @Test

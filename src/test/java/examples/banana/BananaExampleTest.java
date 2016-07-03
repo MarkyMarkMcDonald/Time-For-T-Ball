@@ -3,6 +3,7 @@ package examples.banana;
 import org.junit.Before;
 import org.junit.Test;
 import transformers.Transformer;
+import transformers.Transformers;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -14,7 +15,7 @@ public class BananaExampleTest {
 
     @Before
     public void setUp() throws Exception {
-        bananaTransformer = new BananaTransformer();
+        bananaTransformer = Transformers.create();
     }
 
     @Test
@@ -35,7 +36,6 @@ public class BananaExampleTest {
 
     @Test
     public void oneToOneMapping_withTransformation() {
-
         bananaTransformer
                 .withMapping(BananaRecord::getCountry, BananaBuilder::withCountry)
                 .withMapping(BananaRecord::getExpirationDate, BananaBuilder::withExpirationDate, this::legacyDateParser);
