@@ -2,7 +2,7 @@ package examples.car;
 
 import java.time.LocalDate;
 
-public class CarBuilder {
+class CarBuilder {
     private String name;
     private LocalDate createdAt;
 
